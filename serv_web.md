@@ -23,3 +23,5 @@ Para ilustrar a realização de requisições HTTP, este servidor obter as frase
 Assim, para atender a requisição do navegador, o servidor precisará atuar como cliente HTTP. Ou seja, precisará realizar uma requisição para outro servidor.
 
 ## Código Fonte
+
+- [Frases Aleatórias Tabajara](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_web/main.go)
