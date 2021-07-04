@@ -3,38 +3,59 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io"
 	"log"
 	"net/http"
 )
 
+func main() {
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
 func handler(w http.ResponseWriter, req *http.Request) {
-	// Topo da página
-	topo := `
+	// Realizando requisição e interpretando resultados.
+	frase, err := reqFraseAleatória()
+	if err != nil {
+		log.Printf("erro requisitando frase aleatória:%v", err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	if err := index.Execute(w, frase); err != nil {
+		log.Printf("erro renderizando template %s:%v", index.Name(), err)
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+}
+
+var index = template.Must(template.New("index").Parse(`
 <html>
 <head>
 	<title>Bem-vindas ao Frases Aleatórias Tabajara</title>
 </head>
-<h1>Bem-vindas ao Frases Aleatórias Tabajara</h1>
-<img
-	src="https://uploads.spiritfanfiction.com/fanfics/historias/201809/frases-aleatorias-14335368-190920182223.jpg"
-	alt="Livro com capa vermelha escrita Frases Aleatórias"
-	height=150
-	width=150
-/>
-`
-	// Realizando requisição e interpretando resultados.
-	http.Get("https://allugofrases.herokuapp.com/frases/random")
-
-	// Final da página
-	fim := `
+<h1 align="center">Bem-vindas ao Frases Aleatórias Tabajara</h1>
+<center>
+	<img
+		src="https://uploads.spiritfanfiction.com/fanfics/historias/201809/frases-aleatorias-14335368-190920182223.jpg"
+		alt="Livro com capa vermelha escrita Frases Aleatórias"
+		height=150
+		width=150
+	/>
+</center>
+<br>
+<br>
+<hr>
+<br>
+Frase: {{.Frase}}<br>
+Autor: {{.Autor}}<br>
+<br>
+<hr>
 </html>
-`
-	fmt.Fprintf(w, "%s%s", topo, fim)
-}
+`))
 
 type frase struct {
-	Texto string `json:"frase"`
+	Frase string `json:"frase"`
 	Autor string `json:"autor"`
 }
 
@@ -55,9 +76,4 @@ func reqFraseAleatória() (frase, error) {
 		return frase{}, fmt.Errorf("erro fazendo interpretando resposta:%v", err)
 	}
 	return f, nil
-}
-
-func main() {
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
 }
