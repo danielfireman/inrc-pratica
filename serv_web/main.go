@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/http/httputil"
 )
 
 func main() {
@@ -16,13 +17,15 @@ func main() {
 
 func handler(w http.ResponseWriter, req *http.Request) {
 	// Realizando requisição e interpretando resultados.
-	frase, err := reqFraseAleatória()
+	dados, err := reqFraseAleatoria()
 	if err != nil {
 		log.Printf("erro requisitando frase aleatória:%v", err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	if err := index.Execute(w, frase); err != nil {
+
+	// Renderizando o template e enviando no corpo da resposta.
+	if err := index.Execute(w, dados); err != nil {
 		log.Printf("erro renderizando template %s:%v", index.Name(), err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -47,33 +50,69 @@ var index = template.Must(template.New("index").Parse(`
 <br>
 <hr>
 <br>
-Frase: {{.Frase}}<br>
-Autor: {{.Autor}}<br>
+<b>Frase:</b> {{.Frase}}<br>
+<b>Autor:</b> {{.Autor}}<br>
+<br>
+--
+<br>
+<br>
+<b>Requisição HTTP:</b> {{.Req}}<br>
+<b>Resposta HTTP:</b> {{.Resp}}
 <br>
 <hr>
 </html>
 `))
 
-type frase struct {
+// dadosIndexTemplate guarda informações utilizadas para renderizar a página
+// index.
+type dadosIndexTemplate struct {
 	Frase string `json:"frase"`
 	Autor string `json:"autor"`
+	Req   string
+	Resp  string
 }
 
-func reqFraseAleatória() (frase, error) {
-	resp, err := http.Get("https://allugofrases.herokuapp.com/frases/random")
+// reqFraseAleatoria realiza a chamada a API de frases aleatórias.
+func reqFraseAleatoria() (dadosIndexTemplate, error) {
+	var dados dadosIndexTemplate
+
+	// Cria nova requisição. Observe o método GET.
+	req, err := http.NewRequest("GET", "https://allugofrases.herokuapp.com/frases/random", nil)
 	if err != nil {
-		return frase{}, fmt.Errorf("erro realizando http get:%v", err)
+		return dados, fmt.Errorf("erro criando request:%v", err)
+	}
+
+	// Copia dados crus da requisição. Inclui informações sobre método, cabeçalho, status
+	// e etc.
+	dumpReq, err := httputil.DumpRequest(req, false)
+	if err != nil {
+		return dados, fmt.Errorf("erro dumping request:%v", err)
+	}
+	dados.Req = string(dumpReq)
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return dadosIndexTemplate{}, fmt.Errorf("erro realizando http get:%v", err)
 	}
 	defer resp.Body.Close()
 
-	dados, err := io.ReadAll(resp.Body)
+	// Copia dados crus da resposta. Inclui informações sobre método, cabeçalho, status
+	// e etc.
+	dumpResp, err := httputil.DumpResponse(resp, true)
 	if err != nil {
-		return frase{}, fmt.Errorf("erro fazendo lendo resposta:%v", err)
+		return dados, fmt.Errorf("erro dumping resposta:%v", err)
+	}
+	dados.Resp = string(dumpResp)
+
+	// Lê todos os bytes da parte de dados (corpo) da resposta.
+	corpoResposta, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return dadosIndexTemplate{}, fmt.Errorf("erro fazendo lendo resposta:%v", err)
 	}
 
-	var f frase
-	if err := json.Unmarshal(dados, &f); err != nil {
-		return frase{}, fmt.Errorf("erro fazendo interpretando resposta:%v", err)
+	// Realiza o processamento do corpo da resposta e já preenche variável dados.
+	if err := json.Unmarshal(corpoResposta, &dados); err != nil {
+		return dadosIndexTemplate{}, fmt.Errorf("erro fazendo interpretando resposta:%v", err)
 	}
-	return f, nil
+	return dados, nil
 }
