@@ -7,5 +7,5 @@ Utilizamos a [linguagem de programação Go](http://www.golangbr.org/) nos exemp
 Caso encontre algum problema ou esteja com dificuldade de acesso a esta página, por favor, entre em contato através [deste formulário](https://github.com/danielfireman-ifal/inrc-pratica/issues/new)
 
 ## Práticas
-- [Servidor Web e HTTP](https://danielfireman-ifal.github.io/inrc-pratica/serv_web)
+- [Servidor Web e HTTP](/serv_web)
 
