@@ -25,6 +25,10 @@ func handler(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// Renderizando o template e enviando no corpo da resposta.
+	// Server-Side Rendering -- Renderização do lado do servidor.
+	// Envia para o cliente (navegador) uma versão completa da página.
+	// Para tal, precisa requisitar e completar o texto no servidor,
+	// como parte do atendimento da requisição.
 	if err := index.Execute(w, dados); err != nil {
 		log.Printf("erro renderizando template %s:%v", index.Name(), err)
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -84,12 +88,15 @@ func reqFraseAleatoria() (dadosIndexTemplate, error) {
 
 	// Copia dados crus da requisição. Inclui informações sobre método, cabeçalho, status
 	// e etc.
+	// Não faz parte do funcionamento do servidor. Está aqui para fins didáticos.
 	dumpReq, err := httputil.DumpRequest(req, false)
 	if err != nil {
 		return dados, fmt.Errorf("erro dumping request:%v", err)
 	}
 	dados.Req = string(dumpReq)
 
+	// Realiza requisição.
+	// Inicia conexão TCP, envia dados de acordo com o protocolo HTTP.
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return dadosIndexTemplate{}, fmt.Errorf("erro realizando http get:%v", err)
@@ -98,6 +105,7 @@ func reqFraseAleatoria() (dadosIndexTemplate, error) {
 
 	// Copia dados crus da resposta. Inclui informações sobre método, cabeçalho, status
 	// e etc.
+	// Não faz parte do funcionamento do servidor. Está aqui para fins didáticos.
 	dumpResp, err := httputil.DumpResponse(resp, true)
 	if err != nil {
 		return dados, fmt.Errorf("erro dumping resposta:%v", err)
@@ -111,6 +119,9 @@ func reqFraseAleatoria() (dadosIndexTemplate, error) {
 	}
 
 	// Realiza o processamento do corpo da resposta e já preenche variável dados.
+	// Lembrando que a resposta vem de acordo com o formato JSON. A biblioteca `json`
+	// faz essa conversão. Existem bibliotecas análogas na maioria das linguagens
+	// mais utilizadas.
 	if err := json.Unmarshal(corpoResposta, &dados); err != nil {
 		return dadosIndexTemplate{}, fmt.Errorf("erro fazendo interpretando resposta:%v", err)
 	}
