@@ -70,7 +70,10 @@ func atendeNovaConexao(conn net.Conn) {
 		}
 
 		// Retorna número aleatório entre MIN e MAX.
-		n := rand.Intn(max-min) + min
+		n := max
+		if max != min { // Se min == max retorna um deles e evita um fatal em rand.Intn
+			n = rand.Intn(max-min) + min
+		}
 		result := []byte(fmt.Sprintf("%d\n", n))
 		conn.Write(result)
 	}
