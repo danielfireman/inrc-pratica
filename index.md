@@ -8,5 +8,5 @@ Caso encontre algum problema ou esteja com dificuldade de acesso a esta página,
 
 ## Práticas
 - [Servidor Web e HTTP](/inrc-pratica/serv_web)
-- [Servidor TCP e UDP](/inrc-pratica/serv_rand)
+- [Servidor de Números Aleatórios](/inrc-pratica/serv_rand)
 
