@@ -1,6 +1,8 @@
 # Criando uma Aplicação de Rede
 
-Esta página contém contém links para os arquivos utilizados para criar servidores de aplicações de rede baseados nos protocolos TCP e UDP. O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando diferentes protocolos de transporte. O protocolo será descrito abaixo.
+Esta página contém contém links para os arquivos utilizados para criar servidores de aplicações de rede baseados no protocolo TCP.
+
+O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando diferentes linguagens de programação. O protocolo será descrito abaixo.
 
 - [Descrição](#descrição)
 - [Código Fonte](#código-fonte)
@@ -38,21 +40,47 @@ Caso contrário, uma mensagem de erro será retornada.
 ## Código fonte
 
 - [Servidor baseado em TCP escrito em Go](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_tcp_go/main.go)
+- [Servidor baseado em TCP escrito em Java](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_tcp_java/ServidorTCP.java)
 
-## Testando
+## Executando servidor
 
-Usaremos o programa [Netcat](https://pt.wikipedia.org/wiki/Netcat) para demonstrar a aplicação de rede. Este programa será o cliente da aplicação, ou seja, aquele que realiza a requisição. Este papel é análogo ao que o navegador realiza na Web.
+Para executar qualquer um dos servidores, você precisará baixar o [repositório da prática](https://github.com/danielfireman-ifal/inrc-pratica).
 
-Serão necessário, pelo menos, dois terminais para realizar este teste.
 
-Terminal 1 (servidor):
+### Servidor Go
+
+Para executar este servidor, você precisará [instalar](https://www.alura.com.br/conteudo/golang#:~:text=Se%20queremos%20aprender%20a%20trabalhar,para%20o%20nosso%20sistema%20operacional.) a linguagem de programação Go.
+
+Depois, em um novo terminal:
 ```sh
 $ # Assumindo que estamos na raiz do repositório
 $ cd serv_random_tcp_go
 $ go run main.go 9090
 ```
 
-Terminal 2 (cliente):
+### Servidor Java
+
+Para executar este servidor, você precisará o [kit de desenvolvimento java](https://www.java.com/pt-BR/download/help/develop.html).
+
+```sh
+$ sudo apt install openjdk-16-jdk
+```
+
+Depois, em um novo terminal:
+```sh
+$ # Assumindo que estamos na raiz do repositório
+$ cd serv_random_tcp_java
+$ javac ServidorTCP.java
+$ java ServidorTCP 9090
+```
+
+
+## Testando
+
+Usaremos o programa [Netcat](https://pt.wikipedia.org/wiki/Netcat) para demonstrar a aplicação de rede. Este programa será o cliente da aplicação, ou seja, aquele que realiza a requisição. Este papel é análogo ao que o navegador realiza na Web.
+
+Uma vez que todos os servidores listados acima tem o mesmo comportamento, o teste abaixo pode ser executado com qualquer um. Execute os comandos em um novo terminal.
+
 ```sh
 $ nc localhost 9090
 10,10
