@@ -6,6 +6,7 @@ O objetivo desta prática é fixar conceitos relacionados a protocolos da camada
 
 - [Descrição](#descrição)
 - [Código Fonte](#código-fonte)
+- [Executando Servidor](#executando-servidor)
 - [Testando](#testando)
 
 ## Descrição
