@@ -2,7 +2,7 @@
 
 Esta página contém contém links para os arquivos utilizados para criar servidores de aplicações de rede baseados no protocolo TCP.
 
-O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando diferentes linguagens de programação. O protocolo será descrito abaixo.
+O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando diferentes linguagens de programação. A aplicação seguirá a arquitetura cliente-servidor e o protocolo será descrito abaixo.
 
 - [Descrição](#descrição)
 - [Código Fonte](#código-fonte)
@@ -78,7 +78,7 @@ $ java ServidorTCP 9090
 
 ## Testando
 
-Usaremos o programa [Netcat](https://pt.wikipedia.org/wiki/Netcat) para demonstrar a aplicação de rede. Este programa será o cliente da aplicação, ou seja, aquele que realiza a requisição. Este papel é análogo ao que o navegador realiza na Web.
+Usaremos o programa [Netcat](https://pt.wikipedia.org/wiki/Netcat) para demonstrar a aplicação de rede no SO Linux. Caso você utilize windows, pode fazer o download do [Ncat](https://nmap.org/npcap/#download). Estes programas serão o lado cliente da aplicação, ou seja, aquele que realiza requisições. Este papel é análogo ao que o navegador realiza na Web. 
 
 Uma vez que todos os servidores listados acima tem o mesmo comportamento, o teste abaixo pode ser executado com qualquer um. Execute os comandos em um novo terminal.
 
