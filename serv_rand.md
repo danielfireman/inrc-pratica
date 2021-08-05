@@ -1,8 +1,8 @@
 # Servidor de Números Aleatórios
 
-Esta página contém contém links para os arquivos utilizados para criar servidores de aplicações de rede baseados no protocolo TCP.
+Esta página contém contém links para os arquivos utilizados para criar servidores de aplicações de rede baseados no protocolo TCP (orientado para conexão) e UDP (não orientado para conexão).
 
-O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando diferentes linguagens de programação. A aplicação seguirá a arquitetura cliente-servidor e o protocolo será descrito abaixo.
+O objetivo desta prática é fixar conceitos relacionados a protocolos da camada de aplicação e transporte. Para tal, implementaremos uma aplicação de rede com o mesmo comportamento utilizando sockets (API da camada de transporte, utilizada pela camada de aplicação) em diferentes linguagens de programação. A aplicação seguirá a arquitetura cliente-servidor e o protocolo será descrito abaixo.
 
 - [Descrição](#descrição)
 - [Código Fonte](#código-fonte)
@@ -67,7 +67,8 @@ Para executar este servidor, você precisará o [kit de desenvolvimento java](ht
 $ sudo apt install openjdk-16-jdk
 ```
 
-Depois, em um novo terminal:
+#### TCP
+
 ```sh
 $ # Assumindo que estamos na raiz do repositório
 $ cd serv_random_tcp_java
@@ -75,8 +76,18 @@ $ javac ServidorTCP.java
 $ java ServidorTCP 9090
 ```
 
+#### UDP
+
+```sh
+$ # Assumindo que estamos na raiz do repositório
+$ cd serv_random_udp_java
+$ javac ServidorUPD.java
+$ java ServidorUDP 9090
+```
 
 ## Testando
+
+### TCP
 
 Usaremos o programa [Netcat](https://pt.wikipedia.org/wiki/Netcat) para demonstrar a aplicação de rede no SO Linux. Caso você utilize windows, pode fazer o download do [Ncat](https://nmap.org/npcap/#download). Estes programas serão o lado cliente da aplicação, ou seja, aquele que realiza requisições. Este papel é análogo ao que o navegador realiza na Web. 
 
@@ -101,4 +112,21 @@ Parâmetros inválidos. Deve ser: min,max
 10,30
 14
 ^C
+```
+
+### UDP
+
+#### Cliente Java
+
+Primeiramente, devemos entrar no diretório e compilar o programa cliente:
+```sh
+$ # Assumindo que estamos na raiz do repositório
+$ cd serv_random_udp_java
+$ javac ClienteUDP.java
+```
+
+Depois, executamos o programa cliente:
+
+```sh
+$ java ServidorUDP  20,26 9090
 ```
