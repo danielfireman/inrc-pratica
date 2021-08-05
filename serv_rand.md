@@ -116,6 +116,8 @@ Parâmetros inválidos. Deve ser: min,max
 
 ### UDP
 
+Lembrando que, ao menos até o momento, só temos servidor random UDP implementado em Java. Dessa forma, antes de executar o cliente, você deve rodar o servidor.
+
 #### Cliente Java
 
 Primeiramente, devemos entrar no diretório e compilar o programa cliente:
@@ -130,3 +132,5 @@ Depois, executamos o programa cliente:
 ```sh
 $ java ServidorUDP  20,26 9090
 ```
+
+Onde `20,26` são os parâmetros enviados e `9090` é a porta do servidor. Altere a faixa de valores e veja o que acontece!
