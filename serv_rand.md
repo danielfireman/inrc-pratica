@@ -41,6 +41,7 @@ Caso contrário, uma mensagem de erro será retornada.
 ## Código fonte
 
 - [Servidor baseado em TCP escrito em Go](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_tcp_go/main.go)
+- [Cliente baseado em TCP escrito em Go](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/client_random_tcp_go/main.go)
 - [Servidor baseado em TCP escrito em Java](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_tcp_java/ServidorTCP.java)
 - [Servidor baseado em UDP escrito em Java](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_udp_java/ServidorUDP.java)
 - [Cliente baseado em UDP escrito em Java](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_random_udp_java/ClienteUDP.java)
