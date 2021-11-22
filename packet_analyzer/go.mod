@@ -1,4 +1,4 @@
-module main
+module packet_analyzer
 
 go 1.17
 

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/google/gopacket"
@@ -10,34 +12,45 @@ import (
 )
 
 var (
-	device       string = "eth0"
-	snapshot_len int32  = 1024
-	promiscuous  bool   = false
+	interf = flag.String("i", "eth0", "Device to listen to.")
+	port   = flag.Int("port", 8080, "Port to listen to.")
+)
+
+var (
+	snapshot_len int32 = 1024
+	promiscuous  bool  = false
 	err          error
-	timeout      time.Duration = 30 * time.Second
+	timeout      time.Duration = 10 * time.Second
 	handle       *pcap.Handle
 )
 
 func main() {
+	flag.Parse()
+
 	// Open device
-	handle, err = pcap.OpenLive(device, snapshot_len, promiscuous, timeout)
+	handle, err = pcap.OpenLive(*interf, snapshot_len, promiscuous, timeout)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer handle.Close()
 
 	// Set filter
-	var filter string = "tcp and port 80"
+	filter := fmt.Sprintf("tcp and port %d", *port)
 	err = handle.SetBPFFilter(filter)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("Only capturing TCP port 80 packets.")
+	fmt.Println("Only capturing device", *interf, "TCP port", *port, "packets.")
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	for packet := range packetSource.Packets() {
 		// Do something with a packet here.
 		fmt.Println(packet)
+		if packet.ApplicationLayer() != nil {
+			p := string(packet.ApplicationLayer().Payload())
+			fmt.Println("[Datagrama de aplicação] Conteúdo do Carga útil:", strings.TrimRight(p, "\n"))
+		} else {
+			fmt.Println("[Datagrama de controle]")
+		}
 	}
-
 }
