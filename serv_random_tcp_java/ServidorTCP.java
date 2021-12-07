@@ -42,6 +42,8 @@ public class ServidorTCP {
     }
 
     private static void atendeNovaConexao(Socket socket) {
+        String clientAddr = socket.getRemoteSocketAddress().toString();
+        System.out.printf("Conexão %s iniciada\n", clientAddr);
         // Configurando semente do gerador de números pseudo-aleatórios.
         Random rand = new Random();
         rand.setSeed(System.nanoTime());
@@ -55,6 +57,7 @@ public class ServidorTCP {
                     System.out.printf("Conexão %s encerrada\n", socket.getRemoteSocketAddress());
                     break;
                 }
+                System.out.printf("Mensagem %s recebida de %s\n", netData.substring(0, netData.length()-2), clientAddr);
 
                 // Recebe parâmetros do cliente (min e max). Retornando o erro para o cliente
                 // caso exista erro na passagem de parâmetros.
@@ -76,6 +79,7 @@ public class ServidorTCP {
                 }
                 out.write(String.format("%d\n", n));
                 out.flush();
+                System.out.printf("Resposta %d enviada para %s\n", n, clientAddr);
             }
         } catch (IOException ioe) {
             fatal(String.format("Erro lendo ou escrevendo do socket cliente:%s", ioe.getMessage()));
