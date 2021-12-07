@@ -42,7 +42,8 @@ func main() {
 }
 
 func atendeNovaConexao(conn net.Conn) {
-	fmt.Printf("Atendendo conexão de %s\n", conn.RemoteAddr().String())
+	clientAddr := conn.RemoteAddr().String()
+	fmt.Printf("Atendendo conexão de %s\n", clientAddr)
 	for {
 
 		// O protocolo recebe: MIN,MAX\n
@@ -50,7 +51,7 @@ func atendeNovaConexao(conn net.Conn) {
 
 		// Checa se a conexão foi encerrada do lado cliente.
 		if err == io.EOF {
-			fmt.Printf("Conexão %s encerrada\n", conn.RemoteAddr().String())
+			fmt.Printf("Conexão %s encerrada\n", clientAddr)
 			break
 		}
 
@@ -59,6 +60,8 @@ func atendeNovaConexao(conn net.Conn) {
 			fmt.Printf("Erro lendo da conexão %v:%v", conn, err)
 			break
 		}
+
+		fmt.Printf("Mensagem %s recebida de %s\n", string(netData[0:len(netData)-2]), clientAddr)
 
 		// Recebe parâmetros do cliente (min e max). Retornando o erro para o cliente
 		// caso exista erro na passagem de parâmetros.
@@ -76,6 +79,7 @@ func atendeNovaConexao(conn net.Conn) {
 		}
 		result := []byte(fmt.Sprintf("%d\n", n))
 		conn.Write(result)
+		fmt.Printf("Resposta %d enviada para %s\n", n, clientAddr)
 	}
 	conn.Close()
 }
