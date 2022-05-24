@@ -7,6 +7,9 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
+/**
+ * Implementa o atendimento a requisições a página inicial do servidor.
+ */
 public class IndexHandler implements HttpHandler {
 
     public static final String PATH = "/";
