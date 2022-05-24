@@ -12,6 +12,7 @@ import com.sun.net.httpserver.HttpHandler;
  */
 public class RaizHandler implements HttpHandler {
 
+    // Path relacionado ao tratador de raiz quadrada.
     public static final String PATH = "/raiz";
 
     @Override
@@ -19,6 +20,8 @@ public class RaizHandler implements HttpHandler {
         // Primeira coisa a fazer é saber qual é o parâmetro.
         // O que acontece no código abaixo se a URL não continuar o parâmetro? Por exemplo, somente "/raiz".
         String[] partes = conn.getRequestURI().getPath().split("/");
+
+        // O que acontece se o usuário colocar vários parâmetros? Por exemplo, "/raiz/1/2".
         String parametro = partes[2]; // partes[0] = "", partes[1] = "raiz"
         byte[] result = calculateResponse(parametro);
         try (conn) {
