@@ -24,7 +24,7 @@ public class RaizHandler implements HttpHandler {
         // O que acontece se o usuário colocar vários parâmetros? Por exemplo, "/raiz/1/2".
         String parametro = partes[2]; // partes[0] = "", partes[1] = "raiz"
         byte[] result = calculateResponse(parametro);
-        try (conn) {
+        try {
             // Lembrando do protocolo HTTP, primeiro o status ...
             conn.sendResponseHeaders(HTTP_OK, result.length);
 
@@ -40,6 +40,8 @@ public class RaizHandler implements HttpHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            conn.close();
         }
     }
 

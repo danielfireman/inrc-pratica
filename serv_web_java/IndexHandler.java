@@ -17,7 +17,8 @@ public class IndexHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange conn) throws IOException {
         byte[] hello = "Seja bem-vindo(a) a API calculadora!".getBytes();
-        try (conn) {
+
+        try {
             // Lembrando do protocolo HTTP, primeiro o status ...
             conn.sendResponseHeaders(HTTP_OK, hello.length);
 
@@ -33,6 +34,8 @@ public class IndexHandler implements HttpHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            conn.close();
         }
     }
 }
