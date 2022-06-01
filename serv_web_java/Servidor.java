@@ -15,13 +15,14 @@ public class Servidor {
         // Comumente dizemos que o servidor está "ouvindo" essa porta.
         // Se esse valor for zero, a biblioteca irá solicitar uma porta
         // sem uso ao SO.
-        InetSocketAddress bindAddr = new InetSocketAddress(0);
+        InetSocketAddress bindAddr = new InetSocketAddress(36615);
         HttpServer server = HttpServer.create(bindAddr, TAMANHO_BACKLOG);
         server.setExecutor(Executors.newSingleThreadExecutor());
 
         // Registrando caminhos que devem ser atendidos.
         server.createContext(IndexHandler.PATH, new IndexHandler());
         server.createContext(RaizHandler.PATH, new RaizHandler());
+        server.createContext(MaiusculaHandler.PATH, new MaiusculaHandler());
 
         // Iniciando servidor.
         server.start();

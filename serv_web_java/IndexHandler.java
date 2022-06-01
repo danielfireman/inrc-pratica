@@ -16,7 +16,7 @@ public class IndexHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange conn) throws IOException {
-        byte[] hello = "Seja bem-vindo(a) a API calculadora!".getBytes();
+        byte[] hello = "Seja bem-vindo(a) a API Balaio de Gato! Temos os seguintes endpoints: /raiz e /maiuscula".getBytes();
 
         try {
             // Lembrando do protocolo HTTP, primeiro o status ...
