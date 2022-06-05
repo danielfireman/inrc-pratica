@@ -53,14 +53,14 @@ cd serv_web_java
 
 Você pode acessar as API usando o comando [curl](https://curl.se/download.html). Exemplos:
 
-````
+```
 curl http://{{DOMINIO_ESPECIFICO_POD}}.gitpod.io/
 ```
 
-````
+```
 curl http://{{DOMINIO_ESPECIFICO_POD}}.gitpod.io/raiz/4
 ```
 
-````
+```
 curl http://{{DOMINIO_ESPECIFICO_POD}}.gitpod.io/maiuscula -d minuscula
 ```
