@@ -24,4 +24,4 @@ Assim, para atender a requisição do navegador, o servidor precisará atuar com
 
 ## Código Fonte
 
-- [Frases Aleatórias Tabajara](https://github.com/danielfireman-ifal/inrc-pratica/blob/main/serv_web/main.go)
+- [Frases Aleatórias Tabajara](https://github.com/danielfireman/inrc-pratica/blob/main/serv_web/main.go)
